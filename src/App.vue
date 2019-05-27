@@ -1,26 +1,55 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <v-header :seller="seller"></v-header>
+    <div class='tab'>
+      <div class='tab-item'>
+        <router-link to="/goods">商品</router-link>
+      </div>
+      <div class='tab-item'>
+        <router-link to="/ratings">评论</router-link>
+        </div>
+      <div class='tab-item'>
+        <router-link to="/seller">商家</router-link>
+        </div>
+    </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import header from './components/header/header'
+import { getSeller } from 'api'
 export default {
-  name: 'app',
+  data () {
+    return {
+      seller: {}
+    }
+  },
+  created () {
+    getSeller().then((seller) => {
+      this.seller = seller
+    })
+  },
   components: {
-    HelloWorld
+    'v-header': header
   }
 }
 </script>
 <style lang="stylus">
+@import "./common/stylus/mixin.styl"
 #app
-  font-family 'Avenir', Helvetica, Arial, sans-serif
-  -webkit-font-smoothing antialiased
-  -moz-osx-font-smoothing grayscale
-  text-align center
-  color #2c3e50
-  margin-top 60px
+  .tab
+    display:flex
+    width:100%
+    line-height:40px
+    height :40px
+    font-size:14px
+    border-1px(rgba(7,17,27,0.1))
+    .tab-item
+      flex:1
+      text-align:center
+      & > a
+        display block
+        &.active
+          color:rgb(240,20,20)
 </style>
