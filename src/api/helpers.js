@@ -9,7 +9,6 @@ export function get (url) {
     }).then((res) => {
       const { errno, data } = res.data
       if (errno === ERR_OK) {
-        console.log(data)
         return data
       }
     }).catch(() => {

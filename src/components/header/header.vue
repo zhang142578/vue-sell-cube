@@ -29,16 +29,40 @@
         <div class="background">
             <img :src="seller.avatar" width='100%' height='100%' alt="">
         </div>
+        <transition name='fade'>
         <div v-show="detailShow" class="detail">
             <div class="detail-wrapper">
                 <div class='detail-main clear-fix'>
                    <h1 class='name'>{{seller.name}}</h1>
+                   <div class="star-wrapper">
+                       <star :size='48' :score='seller.score'></star>
+                   </div>
+                   <div class='title'>
+                       <div class="line"></div>
+                       <div class="text">优惠信息</div>
+                       <div class="line"></div>
+                   </div>
+                   <ul v-if='seller.supports' class='supports'>
+                       <li class='support-item' v-for='(item,index) in seller.supports' :key='index'>
+                          <support-ico class='ico' :size=2 :type='seller.supports[index].type'></support-ico>
+                          <span class='text'>{{seller.supports[index].description}}</span>
+                       </li>
+                   </ul>
+                    <div class='title'>
+                       <div class="line"></div>
+                       <div class="text">商家公告</div>
+                       <div class="line"></div>
+                   </div>
+                   <div class="bulletin">
+                       <p class="content">{{seller.bulletin}}</p>
+                   </div>
                 </div>
             </div>
             <div class='detail-close'>
                 <i class='icon-close' @click='detailClose'></i>
             </div>
         </div>
+        </transition>
     </div>
 </template>
 <script>
@@ -77,6 +101,11 @@ export default {
 @import '../../common/stylus/mixin'
 @import '../../common/stylus/variable'
 @import '../../common/stylus/base'
+
+.fade-enter-active, .fade-leave-active
+  transition: opacity .5s
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+  opacity: 0
 .header
     color:#fff
     position relative
@@ -188,8 +217,8 @@ export default {
         left 0
         width 100%
         height 100%
-        background-color rgba(7,17,27,0.8)
         overflow auto
+        background rgba(7,17,27,0.8)
         .detail-wrapper
             display: inline-block
             width: 100%
@@ -202,6 +231,48 @@ export default {
                     font-size 16px
                     font-weight 700
                     text-align center
+                .star-wrapper
+                    margin-top 16px
+                    padding 2px 0
+                    text-align center
+                    line-height 24px
+                .title
+                    display flex
+                    width 80%
+                    margin 28px auto 24px auto
+                    .line
+                        flex 1
+                        position relative
+                        top -6px
+                        border-bottom 1px solid rgba(255,255,255,0.2)
+                    .text
+                        padding 0 12px
+                        font-size 14px
+                .supports
+                    width 80%
+                    margin 0 auto
+                    .support-item
+                        padding 0 12px
+                        margin-bottom 12px
+                        font-weight 200
+                        font-size 0
+                        &:last-child
+                            margin-bottom 0
+                    .ico
+                        display inline-block
+                        vertical-align top
+                        margin-right 6px
+                        background-repeat no-repeat
+                    .text
+                        line-height 16px
+                        font-size 12px
+                .bulletin
+                    width 80%
+                    margin 0 auto
+                    .content
+                        margin 0 12px
+                        font-size $fontsize-small
+                        line-height 24px
         .detail-close
             position: relative
             width: 30px
