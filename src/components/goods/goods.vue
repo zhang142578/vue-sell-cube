@@ -32,16 +32,20 @@
                                     </span>
                                     <span class='oldprice' v-show='food.oldPrice'>￥{{food.oldPrice}}</span>
                                 </div>
+                                <div class='cartcontrol-wrapper'>
+                                  <cartcontrol @add='onAdd' :food='food'></cartcontrol>
+                                </div>
                             </div>
                         </li>
                     </ul>
                 </li>
             </ul>
         </div>
-        <shopcarts :delivery-price='seller.deliveryPrice' :min-price='seller.minPrice'></shopcarts>
+        <shopcarts ref='shopcart' :select-foods='selectFoods' :delivery-price='seller.deliveryPrice' :min-price='seller.minPrice'></shopcarts>
     </div>
 </template>
 <script>
+import cartcontrol from '../../components/cartcontrol/cartcontrol'
 import Bscroll from 'better-scroll'
 import { getGoods } from 'api'
 import SupportIco from '../support-ico/support-ico'
@@ -61,7 +65,8 @@ export default {
   },
   components: {
     SupportIco,
-    shopcarts
+    shopcarts,
+    cartcontrol
   },
   computed: {
     currentindex () {
@@ -74,6 +79,17 @@ export default {
         }
       }
       return 0
+    },
+    selectFoods () {
+      let foods = []
+      this.goods.forEach((good) => {
+        good.foods.forEach((food) => {
+          if (food.count) {
+            foods.push(food)
+          }
+        })
+      })
+      return foods
     }
   },
   created () {
@@ -103,6 +119,7 @@ export default {
         click: true
       })
       this.foodsScroll = new Bscroll(this.$refs.foodswrapper, {
+        click: true,
         probeType: 3
       })
       this.foodsScroll.on('scroll', (pos) => {
@@ -119,6 +136,9 @@ export default {
         height += item.clientHeight
         this.listHeight.push(height)
       }
+    },
+    onAdd (target) {
+      this.$refs.shopcart.drop(target)
     }
   }
 }
@@ -128,6 +148,7 @@ export default {
 @import '../../common/stylus/variable'
 @import '../../common/stylus/base'
 .goods
+    width 100%
     display flex
     position absolute
     overflow hidden
@@ -217,4 +238,8 @@ export default {
                         font-weight 700
                         line-height 24px
                         text-decoration:line-through
+                .cartcontrol-wrapper
+                  position absolute
+                  right 0
+                  bottom 12px
 </style>
