@@ -30,7 +30,7 @@ export default {
       } else {
         this.food.count++
       }
-      console.log(1)
+      event.stopPropagation()
       this.$emit('add', event.target)
     },
     desCart () {
@@ -39,6 +39,7 @@ export default {
       } else {
         this.food.count--
       }
+      event.stopPropagation()
     }
   }
 }

@@ -1,5 +1,6 @@
 <template>
-    <div class='goods'>
+    <div>
+      <div class='goods'>
         <div class='menu-wrapper' ref='menuwrapper'>
             <ul>
                 <li v-for='(item,index) in goods' :key='index' class='menu-item menu-item-hook' :class="{'current':currentindex===index}" @click='_tofoodList(index)'>
@@ -15,7 +16,7 @@
                 <li v-for='(item,index) in goods' :key='index' class='goods_list food-list-hook'>
                     <h1 class='title'>{{item.name}}</h1>
                     <ul>
-                        <li v-for='(food,index) in item.foods' class='food-item' :key='index' >
+                        <li @click='selectFood(food,$event)' v-for='(food,index) in item.foods' class='food-item' :key='index' >
                             <div class='icon'>
                                 <img width='57' height='57' :src='food.icon' alt="">
                             </div>
@@ -42,6 +43,8 @@
             </ul>
         </div>
         <shopcarts ref='shopcart' :select-foods='selectFoods' :delivery-price='seller.deliveryPrice' :min-price='seller.minPrice'></shopcarts>
+      </div>
+      <food :food='selectedFood' ref='food'></food>
     </div>
 </template>
 <script>
@@ -50,6 +53,7 @@ import Bscroll from 'better-scroll'
 import { getGoods } from 'api'
 import SupportIco from '../support-ico/support-ico'
 import shopcarts from '../../components/shopcarts/shopcarts'
+import food from '../../components/food/food'
 export default {
   props: {
     seller: {
@@ -60,13 +64,15 @@ export default {
     return {
       goods: [],
       listHeight: [],
-      scrollY: 0
+      scrollY: 0,
+      selectedFood: {}
     }
   },
   components: {
     SupportIco,
     shopcarts,
-    cartcontrol
+    cartcontrol,
+    food
   },
   computed: {
     currentindex () {
@@ -139,11 +145,15 @@ export default {
     },
     onAdd (target) {
       this.$refs.shopcart.drop(target)
+    },
+    selectFood (food, event) {
+      this.selectedFood = food
+      this.$refs.food.show()
     }
   }
 }
 </script>
-<style lang='stylus'>
+<style lang='stylus' scoped>
 @import '../../common/stylus/mixin'
 @import '../../common/stylus/variable'
 @import '../../common/stylus/base'
