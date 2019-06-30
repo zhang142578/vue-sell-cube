@@ -277,7 +277,7 @@ export default {
             position: relative
             width: 30px
             height: 30px
-            margin: -64px auto 0 auto
+            margin: -100px auto 0 auto
             clear: both
             font-size: $fontsize-large-xxxx
 </style>

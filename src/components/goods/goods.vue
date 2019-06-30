@@ -16,7 +16,7 @@
                 <li v-for='(item,index) in goods' :key='index' class='goods_list food-list-hook'>
                     <h1 class='title'>{{item.name}}</h1>
                     <ul>
-                        <li @click='selectFood(food,$event)' v-for='(food,index) in item.foods' class='food-item' :key='index' >
+                        <li @click='selectFood(food)' v-for='(food,index) in item.foods' class='food-item' :key='index' >
                             <div class='icon'>
                                 <img width='57' height='57' :src='food.icon' alt="">
                             </div>
@@ -44,7 +44,7 @@
         </div>
         <shopcarts ref='shopcart' :select-foods='selectFoods' :delivery-price='seller.deliveryPrice' :min-price='seller.minPrice'></shopcarts>
       </div>
-      <food :food='selectedFood' ref='food'></food>
+      <food @add='onAdd' :food='selectedFood' ref='food'></food>
     </div>
 </template>
 <script>
@@ -80,7 +80,6 @@ export default {
         let height1 = this.listHeight[i]
         let height2 = this.listHeight[i + 1]
         if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
-          // console.log(i)
           return i
         }
       }

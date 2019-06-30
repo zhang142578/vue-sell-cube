@@ -6,7 +6,7 @@ import Router from 'vue-router'
 // import Main from './components/content/main'
 import goods from './components/goods/goods'
 import ratings from './components/ratings/ratings'
-import seller from './components/seller/seller'
+import fseller from './components/fseller/fseller'
 
 Vue.use(Router)
 
@@ -17,6 +17,6 @@ export default new Router({
     { path: '/', redirect: '/goods' },
     { path: '/goods', component: goods },
     { path: '/ratings', component: ratings },
-    { path: '/seller', component: seller }
+    { path: '/fseller', component: fseller }
   ]
 })
